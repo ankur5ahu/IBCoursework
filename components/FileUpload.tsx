@@ -12,6 +12,7 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type FileUploadProps = {
   onFileUpload?: (file: File | null) => void;
@@ -49,6 +50,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   const [essayTitle, setEssayTitle] = useState<string>("");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const dropZoneRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
 
   const handleFile = (selectedFile: File | null) => {
     if (
@@ -140,15 +142,18 @@ const FileUpload: React.FC<FileUploadProps> = ({
         time: Math.floor(Math.random() * 30) + 10,
       };
 
-      addEvaluatedFile(evaluatedFileData);
-
+      const fileIndex = addEvaluatedFile(evaluatedFileData);
+      
       setFile(null);
       setSelectedCoursework("");
       setSelectedSubject("");
       setEssayTitle("");
+      
       if (inputRef.current) {
         inputRef.current.value = "";
       }
+      
+      router.push(`/coursework/${fileIndex}`);
     }
   };
 

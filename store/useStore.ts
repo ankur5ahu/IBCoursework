@@ -25,12 +25,13 @@ interface StoreState {
 
 export const useStore = create<StoreState>()(
     persist(
-        (set) => ({
+        (set, get) => ({
             files: [],
-            addEvaluatedFile: (fileData) =>
-                set((state) => ({
-                    files: [...state.files, fileData],
-                }))
+            addEvaluatedFile: (fileData) => {
+                const newFiles = [...get().files, fileData];
+                set({ files: newFiles });
+                return newFiles.length - 1; 
+            }
         }),
         {
             name: 'file-storage',
