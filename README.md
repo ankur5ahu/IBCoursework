@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Setup Instructions
 
-First, run the development server:
+1. **Clone the Repository**  
+   ```bash
+   git clone https://github.com/ankur5ahu/IBCoursework.git
+   cd IBCoursework
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. **Install Dependencies**  
+   Ensure you have Node.js installed, then run:
+   ```bash
+   npm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. **Run the Development Server**  
+   Start the server with:
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) to view the application in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Implemented Features
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### 1. File Upload
 
-## Learn More
+- **Drag-and-Drop Functionality**: Users can drag and drop PDF files for easy uploading.
+- **Manual Upload Option**: Users can also manually select files for upload.
+- **File Size Limit**: Displayed a limit of 25 MB per file.
+- **Local Storage**: Uploaded files and their metadata are stored locally for persistence.
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Local Storage Implementation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Persistence**: Files and metadata are saved across page reloads.
+- **Efficient Retrieval**: Implemented efficient methods to retrieve stored files and data.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### 3. Coursework Details Form
 
-## Deploy on Vercel
+- **Dropdowns**: Includes dropdowns for selecting "Coursework Type" and "Subject".
+- **Text Input**: A field for entering the essay title.
+- **Local Storage**: Form data is stored locally and associated with the uploaded file.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 4. Evaluation Display
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Dummy Data**: Evaluation display uses dummy data.
+- **Circular Progress Indicator**: Shows the overall score.
+- **Score Breakdown**: Displays a breakdown of scores by criteria (A, B, C).
+- **Evaluation Date**: Includes the date of evaluation.
+- **Local Storage**: Evaluation results are stored and retrieved locally.
+
+### 5. Coursework List
+
+- **Display Coursework**: Lists previously uploaded coursework from local storage.
+- **Details Shown**: Displays title, subject, word count, and other relevant details for each item.
+
+### 6. Explore Coursework Section
+
+- **Tabbed Interface**: Implements tabs for different coursework categories.
+- **Grid Layout**: Displays coursework examples in a grid layout.
+
+### Bonus Features
+
+- **Animations**: Smooth transitions and micro-interactions enhance user feedback.
+- **User Gratification**: Includes congratulatory messages for good scores and encouraging feedback for areas of improvement.
+
+## Challenges Faced
+
+### 1. Setting Up Zustand
+
+- **Challenge**: Initial setup of Zustand and its store was challenging.
+- **Solution**: Overcame this by reading documentation and through trial and error. Prior experience with Recoil helped speed up the process.
+
+### 2. Rendering PDFs in Evaluation Page
+
+- **Challenge**: Rendering PDFs using the react-pdf package was problematic.
+- **Issue**: Setting up the worker source took significant time.
+  - Tried the recommended approach but encountered an API version mismatch.
+  - Attempted to use CDNs, but they continuously loaded without rendering.
+- **Solution**: Resolved the issue by copying the `dist` worker file into the public folder and fetching it from there, as suggested by various discussions on Stack Overflow and GitHub.
