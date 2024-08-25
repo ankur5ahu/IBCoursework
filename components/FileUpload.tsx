@@ -14,12 +14,6 @@ import { Button } from "./ui/button";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-type FileUploadProps = {
-  onFileUpload?: (file: File | null) => void;
-  courseworkType?: string[];
-  subjects?: string[];
-};
-
 interface FileData {
   name: string;
   type: string;
@@ -37,11 +31,7 @@ interface FileData {
   time: number;
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({
-  onFileUpload,
-  courseworkType = ["IA", "EE", "TOK"],
-  subjects = ["Physics", "Maths", "Chemistry"],
-}) => {
+const FileUpload= () => {
   const { addEvaluatedFile } = useStore();
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<any>("");
@@ -52,6 +42,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
   const dropZoneRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
+  const courseworkType = ["IA", "EE", "TOK"];
+  const subjects = ["Physics", "Maths", "Chemistry"];
+
   const handleFile = (selectedFile: File | null) => {
     if (
       selectedFile &&
@@ -59,7 +52,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
       selectedFile.size <= 25 * 1024 * 1024
     ) {
       setFile(selectedFile);
-      onFileUpload?.(selectedFile);
 
       // Convert PDF to Base64
       const reader = new FileReader();
@@ -107,7 +99,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
     if (inputRef.current) {
       inputRef.current.value = "";
     }
-    onFileUpload?.(null);
     localStorage.removeItem("fileUploadData");
   };
 
@@ -152,7 +143,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       if (inputRef.current) {
         inputRef.current.value = "";
       }
-      
+
       router.push(`/coursework/${fileIndex}`);
     }
   };
