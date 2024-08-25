@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, useRef } from "react";
 import { useStore } from "@/store/useStore";
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import toast from "react-hot-toast";
 
 type FileUploadProps = {
   onFileUpload?: (file: File | null) => void;
@@ -19,55 +20,61 @@ type FileUploadProps = {
 };
 
 interface FileData {
-    name: string;
-    type: string;
-    size: number;
-    lastModified: number;
-    courseworkType: string;
-    subject: string;
-    essayTitle: string;
-    score: number;
-    evaluatedDate: number;
-    remark: string;
-    pdfContent: string;
-  }
+  name: string;
+  type: string;
+  size: number;
+  lastModified: number;
+  courseworkType: string;
+  subject: string;
+  essayTitle: string;
+  score: number;
+  evaluatedDate: number;
+  remark: string;
+  pdfContent: string;
+  stars: number;
+  words: number;
+  time: number;
+}
 
 const FileUpload: React.FC<FileUploadProps> = ({
-    onFileUpload,
-    courseworkType = ["IA", "EE", "TOK"],
-    subjects = ["Physics", "Maths", "Chemistry"],
-  }) => {
-    const { addEvaluatedFile } = useStore();
-    const [file, setFile] = useState<File | null>(null);
-    const [selectedCoursework, setSelectedCoursework] = useState<string>("");
-    const [selectedSubject, setSelectedSubject] = useState<string>("");
-    const [essayTitle, setEssayTitle] = useState<string>("");
-    const inputRef = useRef<HTMLInputElement | null>(null);
-    const dropZoneRef = useRef<HTMLDivElement | null>(null);
-  
-    const handleFile = (selectedFile: File | null) => {
-        if (
-          selectedFile &&
-          selectedFile.type === "application/pdf" &&
-          selectedFile.size <= 25 * 1024 * 1024
-        ) {
-          setFile(selectedFile);
-          onFileUpload?.(selectedFile);
-      
-          // Convert PDF to Base64
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            const base64Content = e.target?.result as string;
-            setFile((prevFile) => ({
-              ...prevFile!,
-              pdfContent: base64Content.split(',')[1], 
-            }));
-          };
-          reader.readAsDataURL(selectedFile);
-        } else if (selectedFile) {
-          console.error("Invalid file. Please select a PDF file under 25MB.");
-        }
+  onFileUpload,
+  courseworkType = ["IA", "EE", "TOK"],
+  subjects = ["Physics", "Maths", "Chemistry"],
+}) => {
+  const { addEvaluatedFile } = useStore();
+  const [file, setFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState<any>("");
+  const [selectedCoursework, setSelectedCoursework] = useState<string>("");
+  const [selectedSubject, setSelectedSubject] = useState<string>("");
+  const [essayTitle, setEssayTitle] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const dropZoneRef = useRef<HTMLDivElement | null>(null);
+
+  const handleFile = (selectedFile: File | null) => {
+    if (
+      selectedFile &&
+      selectedFile.type === "application/pdf" &&
+      selectedFile.size <= 25 * 1024 * 1024
+    ) {
+      setFile(selectedFile);
+      onFileUpload?.(selectedFile);
+
+      // Convert PDF to Base64
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64Content = e.target?.result as string;
+        setFile((prevFile) => ({
+          ...prevFile!,
+          pdfContent: base64Content.split(",")[1],
+        }));
       };
+      reader.readAsDataURL(selectedFile);
+    } else if (selectedFile) {
+      toast.error(
+        "Invalid file type/size. Please select a PDF file under 25MB."
+      );
+    }
+  };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -83,6 +90,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0] || null;
+    setFileName(e.target.files?.[0].name);
     handleFile(uploadedFile);
   };
 
@@ -95,10 +103,10 @@ const FileUpload: React.FC<FileUploadProps> = ({
     e.stopPropagation();
     setFile(null);
     if (inputRef.current) {
-      inputRef.current.value = '';
+      inputRef.current.value = "";
     }
     onFileUpload?.(null);
-    localStorage.removeItem('fileUploadData');
+    localStorage.removeItem("fileUploadData");
   };
 
   const handleDropZoneClick = (e: React.MouseEvent) => {
@@ -109,36 +117,43 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
   const handleEvaluate = () => {
     if (file && selectedCoursework && selectedSubject && essayTitle) {
-        const mockScore = Math.floor(Math.random() * 100);
-        const mockRemark = mockScore >= 80 ? "Excellent work!" : "Good effort, room for improvement.";
-        
-        const evaluatedFileData: FileData = {
-          name: file.name,
-          type: file.type,
-          size: file.size,
-          lastModified: file.lastModified,
-          courseworkType: selectedCoursework,
-          subject: selectedSubject,
-          essayTitle: essayTitle,
-          score: mockScore,
-          evaluatedDate: Date.now(),
-          remark: mockRemark,
-          pdfContent: (file as any).pdfContent,
-        };
-    
-        addEvaluatedFile(evaluatedFileData);
+      const mockScore = Math.floor(Math.random() * 100);
+      const mockRemark =
+        mockScore >= 80
+          ? "Excellent work!"
+          : "Good effort, room for improvement.";
+
+      const evaluatedFileData: FileData = {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        lastModified: file.lastModified,
+        courseworkType: selectedCoursework,
+        subject: selectedSubject,
+        essayTitle: essayTitle,
+        score: mockScore,
+        evaluatedDate: Date.now(),
+        remark: mockRemark,
+        pdfContent: (file as any).pdfContent,
+        stars: Math.floor(Math.random() * 10) + 1,
+        words: Math.floor(Math.random() * 3000) + 1000,
+        time: Math.floor(Math.random() * 30) + 10,
+      };
+
+      addEvaluatedFile(evaluatedFileData);
 
       setFile(null);
       setSelectedCoursework("");
       setSelectedSubject("");
       setEssayTitle("");
       if (inputRef.current) {
-        inputRef.current.value = '';
+        inputRef.current.value = "";
       }
     }
   };
 
-  const isFormValid = file && selectedCoursework && selectedSubject && essayTitle;
+  const isFormValid =
+    file && selectedCoursework && selectedSubject && essayTitle;
 
   return (
     <div className="p-5 bg-neutrals-50 border rounded-3xl">
@@ -159,13 +174,16 @@ const FileUpload: React.FC<FileUploadProps> = ({
         {file ? (
           <div className="flex items-center justify-center">
             <div className="relative inline-flex border mx-auto w-auto rounded-xl justify-center items-center p-1">
-              <div onClick={handleRemove} className="absolute -top-1 -right-1 bg-white border border-neutrals-300 p-0.5 shadow-custom rounded-full cursor-pointer">
+              <div
+                onClick={handleRemove}
+                className="absolute -top-1 -right-1 bg-white border border-neutrals-300 p-0.5 shadow-custom rounded-full cursor-pointer"
+              >
                 <img src="/cross.svg" alt="cross" />
               </div>
               <img src="/frame.svg" alt="frame" />
               <div className="flex p-2 items-center justify-center">
                 <img src="/greenTick.svg" alt="frame" className="p-1" />
-                <p className="text-sm text-neutrals-600">{file.name}</p>
+                <p className="text-sm text-neutrals-600">{fileName}</p>
               </div>
             </div>
           </div>
@@ -194,8 +212,8 @@ const FileUpload: React.FC<FileUploadProps> = ({
           Select your course & subjects<sup>*</sup>
         </p>
         <div className="flex gap-5">
-          <Select 
-            value={selectedCoursework} 
+          <Select
+            value={selectedCoursework}
             onValueChange={(value) => {
               setSelectedCoursework(value);
             }}
@@ -212,7 +230,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
             </SelectContent>
           </Select>
 
-          <Select 
+          <Select
             value={selectedSubject}
             onValueChange={(value) => {
               setSelectedSubject(value);
@@ -250,7 +268,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
       <div className="mt-8 w-[190px]">
         <Button
           disabled={!isFormValid}
-          className={`relative w-full ${isFormValid ? 'bg-primary-500' : 'bg-[#ADB8B9] cursor-not-allowed'}`}
+          className={`relative w-full ${
+            isFormValid ? "bg-primary-500" : "bg-[#ADB8B9] cursor-not-allowed"
+          }`}
           onClick={handleEvaluate}
         >
           <span className="absolute left-1 p-1 bg-neutrals-100 rounded-full align items-start">

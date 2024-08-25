@@ -16,10 +16,38 @@ const ExploreCourseWork: React.FC = () => {
   ];
 
   const exampleCoursework = [
-    { title: "The Impact of Climate Change on Polar Bear Populations", subject: "Biology HL", type: "ee" },
-    { title: "Analysis of Sonnet 18 by William Shakespeare", subject: "English Literature HL", type: "ia" },
-    { title: "The Role of Artificial Intelligence in Modern Healthcare", subject: "Computer Science HL", type: "ee" },
-    { title: "Exploring the Ethical Implications of Gene Editing", subject: "TOK", type: "tok" },
+    {
+      title: "The Impact of Climate Change on Polar Bear Populations",
+      subject: "Biology HL",
+      type: "ee",
+      stars: 2,
+      words: 2500,
+      time: 20,
+    },
+    {
+      title: "Analysis of Sonnet 18 by William Shakespeare",
+      subject: "English Literature HL",
+      type: "ia",
+      stars: 7,
+      words: 1500,
+      time: 15,
+    },
+    {
+      title: "The Role of Artificial Intelligence in Modern Healthcare",
+      subject: "Computer Science HL",
+      type: "ee",
+      stars: 5,
+      words: 3000,
+      time: 25,
+    },
+    {
+      title: "Exploring the Ethical Implications of Gene Editing",
+      subject: "TOK",
+      type: "tok",
+      stars: 6,
+      words: 2000,
+      time: 18,
+    },
   ];
 
   const filteredCoursework = selectedTab === "all" 
@@ -43,9 +71,9 @@ const ExploreCourseWork: React.FC = () => {
             title={work.title}
             description={work.title}
             subject={work.subject}
-            stars={Math.floor(Math.random() * 10) + 1}
-            words={Math.floor(Math.random() * 3000) + 1000}
-            time={Math.floor(Math.random() * 30) + 10}
+            stars={work.stars}
+            words={work.words}
+            time={work.time}
             language="English"
           />
         ))}

@@ -5,7 +5,7 @@ import ExploreCourseWork from "@/components/ExploreCoursework";
 const Home = () => {
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="w-full px-5 sm:w-[600px] md:w-[806px] lg:w-[906px] my-10">
+      <div className="w-full px-5 sm:w-[600px] md:w-[806px] lg:w-[906px] my-20">
         <div className="flex gap-4">
           <div>
             <p className="text-neutrals-900 font-bold text-2xl mb-6">

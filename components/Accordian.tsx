@@ -23,7 +23,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, score, color }) => {
           </div>
           <div className="min-w-0">
             <p className="text-sm font-medium text-gray-500 truncate">{title}:</p>
-            <p className="text-lg font-semibold text-gray-800 truncate">
+            <p className="text-lg font-semibold text-gray-800 text-wrap">
               Understanding Knowledge Questions
             </p>
           </div>
