@@ -110,11 +110,11 @@ const FileUpload= () => {
 
   const handleEvaluate = () => {
     if (file && selectedCoursework && selectedSubject && essayTitle) {
-      const mockScore = Math.floor(Math.random() * 100);
+      const mockScore = Math.floor(Math.random() * 20);
       const mockRemark =
-        mockScore >= 80
-          ? "Excellent work!"
-          : "Good effort, room for improvement.";
+        mockScore >= 18
+          ? "Excellent"
+          : "Good effort, room for improvement";
 
       const evaluatedFileData: FileData = {
         name: file.name,
@@ -128,7 +128,7 @@ const FileUpload= () => {
         evaluatedDate: Date.now(),
         remark: mockRemark,
         pdfContent: (file as any).pdfContent,
-        stars: Math.floor(Math.random() * 10) + 1,
+        stars: Math.floor(Math.random() * 6) + 1,
         words: Math.floor(Math.random() * 3000) + 1000,
         time: Math.floor(Math.random() * 30) + 10,
       };
