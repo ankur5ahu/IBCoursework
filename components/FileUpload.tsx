@@ -79,6 +79,7 @@ const FileUpload= () => {
     e.preventDefault();
     e.stopPropagation();
     const droppedFile = e.dataTransfer.files[0];
+    setFileName(e.dataTransfer.files[0].name);
     handleFile(droppedFile);
   };
 
